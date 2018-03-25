@@ -9047,7 +9047,7 @@ static void rdp_set_scissor(const uint32_t* args)
     parallel_worker->globals.sckeepodd = (args[1] >> 24) & 1;
 }
 
-int rdp_init(struct core_config* _config)
+void rdp_init(struct core_config* _config)
 {
    int i;
    uint32_t tmp[2] = {0};
@@ -9083,8 +9083,6 @@ int rdp_init(struct core_config* _config)
    combiner_init();
    tex_init();
    rasterizer_init();
-
-   return 0;
 }
 
 static void rdp_invalid(const uint32_t* args)
