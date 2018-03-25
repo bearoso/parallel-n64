@@ -104,7 +104,7 @@ static bool     reinit_screen       = false;
 static bool     first_context_reset = false;
 static bool     pushed_frame        = false;
 
-unsigned frame_dupe                 = false;
+unsigned frame_dupe                 = 0;
 
 uint32_t *blitter_buf               = NULL;
 uint32_t *blitter_buf_lock          = NULL;
@@ -1258,9 +1258,9 @@ void update_variables(bool startup)
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && initial_boot)
    {
       if (!strcmp(var.value, "original"))
-         frame_dupe = false;
+         frame_dupe = 0;
       else if (!strcmp(var.value, "fullspeed"))
-         frame_dupe = true;
+         frame_dupe = 1;
    }
 
    var.key = "parallel-n64-alt-map";

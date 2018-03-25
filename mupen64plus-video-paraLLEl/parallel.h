@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-bool parallel_init(const struct retro_hw_render_interface_vulkan *vulkan);
+int parallel_init(const struct retro_hw_render_interface_vulkan *vulkan);
 void parallel_deinit(void);
 bool parallel_frame_is_valid(void);
 unsigned parallel_frame_width(void);

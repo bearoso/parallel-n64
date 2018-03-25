@@ -52,7 +52,7 @@
 
 #include <boolean.h>
 
-extern int retro_return(bool just_flipping);
+extern int retro_return(int just_flipping);
 
 int interrupt_unsafe_state = 0;
 

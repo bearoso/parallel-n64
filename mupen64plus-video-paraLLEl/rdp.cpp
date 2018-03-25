@@ -200,6 +200,7 @@ bool init()
       pending_scissor_height = false;
    }
 
+   return true;
 }
 
 void deinit()

@@ -943,10 +943,12 @@ static bool vi_process_start(void)
                 {
                    tvfadeoutstate[i + 1]--;
                    if (!tvfadeoutstate[i + 1])
+                   {
                       if (validh)
                          memset(&prescale[(i + 1) * PRESCALE_WIDTH + h_start], 0, hres * sizeof(uint32_t));
                       else
                          memset(&prescale[(i + 1) * PRESCALE_WIDTH], 0, PRESCALE_WIDTH * sizeof(uint32_t));
+                   }
                 }
 
                 i += 2;
@@ -959,10 +961,12 @@ static bool vi_process_start(void)
            if (tvfadeoutstate[i])
               tvfadeoutstate[i]--;
            if (!tvfadeoutstate[i])
+           {
               if (validh)
                  memset(&prescale[i * PRESCALE_WIDTH + h_start], 0, hres * sizeof(uint32_t));
               else
                  memset(&prescale[i * PRESCALE_WIDTH], 0, PRESCALE_WIDTH * sizeof(uint32_t));
+           }
         }
     }
 

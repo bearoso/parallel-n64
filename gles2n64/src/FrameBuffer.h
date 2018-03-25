@@ -42,7 +42,7 @@ struct FrameBufferInfo
 	int numBuffers;
 };
 
-extern struct FrameBufferInfo frameBuffer;
+extern struct FrameBufferInfo frameBufferInfo;
 
 void FrameBuffer_Init(void);
 void FrameBuffer_Destroy(void);

@@ -9,58 +9,58 @@
 #include "ShaderCombiner.h"
 #include "VI.h"
 
-struct FrameBufferInfo frameBuffer;
+struct FrameBufferInfo frameBufferInfo;
 CachedTexture *g_RDRAMtoFB;
 
 void FrameBuffer_Init(void)
 {
-   frameBuffer.current = NULL;
-   frameBuffer.top = NULL;
-   frameBuffer.bottom = NULL;
-   frameBuffer.numBuffers = 0;
+   frameBufferInfo.current = NULL;
+   frameBufferInfo.top = NULL;
+   frameBufferInfo.bottom = NULL;
+   frameBufferInfo.numBuffers = 0;
 }
 
 void FrameBuffer_RemoveBottom(void)
 {
    struct FrameBuffer *newBottom = (struct FrameBuffer*)
-      frameBuffer.bottom->higher;
+      frameBufferInfo.bottom->higher;
 
-   TextureCache_Remove( frameBuffer.bottom->texture );
+   TextureCache_Remove( frameBufferInfo.bottom->texture );
 
-   if (frameBuffer.bottom == frameBuffer.top)
-      frameBuffer.top = NULL;
+   if (frameBufferInfo.bottom == frameBufferInfo.top)
+      frameBufferInfo.top = NULL;
 
-   free( frameBuffer.bottom );
+   free( frameBufferInfo.bottom );
 
-   frameBuffer.bottom = newBottom;
+   frameBufferInfo.bottom = newBottom;
 
-   if (frameBuffer.bottom != NULL)
-      frameBuffer.bottom->lower = NULL;
+   if (frameBufferInfo.bottom != NULL)
+      frameBufferInfo.bottom->lower = NULL;
 
-   frameBuffer.numBuffers--;
+   frameBufferInfo.numBuffers--;
 }
 
 void FrameBuffer_Remove( struct FrameBuffer *buffer )
 {
-   if ((buffer == frameBuffer.bottom) &&
-         (buffer == frameBuffer.top))
+   if ((buffer == frameBufferInfo.bottom) &&
+         (buffer == frameBufferInfo.top))
    {
-      frameBuffer.top = NULL;
-      frameBuffer.bottom = NULL;
+      frameBufferInfo.top = NULL;
+      frameBufferInfo.bottom = NULL;
    }
-   else if (buffer == frameBuffer.bottom)
+   else if (buffer == frameBufferInfo.bottom)
    {
-      frameBuffer.bottom = buffer->higher;
+      frameBufferInfo.bottom = buffer->higher;
 
-      if (frameBuffer.bottom)
-         frameBuffer.bottom->lower = NULL;
+      if (frameBufferInfo.bottom)
+         frameBufferInfo.bottom->lower = NULL;
    }
-   else if (buffer == frameBuffer.top)
+   else if (buffer == frameBufferInfo.top)
    {
-      frameBuffer.top = buffer->lower;
+      frameBufferInfo.top = buffer->lower;
 
-      if (frameBuffer.top)
-         frameBuffer.top->higher = NULL;
+      if (frameBufferInfo.top)
+         frameBufferInfo.top->higher = NULL;
    }
    else
    {
@@ -73,12 +73,12 @@ void FrameBuffer_Remove( struct FrameBuffer *buffer )
 
    free( buffer );
 
-   frameBuffer.numBuffers--;
+   frameBufferInfo.numBuffers--;
 }
 
 void FrameBuffer_RemoveBuffer( uint32_t address )
 {
-   struct FrameBuffer *current = (struct FrameBuffer*)frameBuffer.bottom;
+   struct FrameBuffer *current = (struct FrameBuffer*)frameBufferInfo.bottom;
 
    while (current != NULL)
    {
@@ -98,31 +98,31 @@ struct FrameBuffer *FrameBuffer_AddTop(void)
 
    newtop->texture = TextureCache_AddTop();
 
-   newtop->lower = frameBuffer.top;
+   newtop->lower = frameBufferInfo.top;
    newtop->higher = NULL;
 
-   if (frameBuffer.top)
-      frameBuffer.top->higher = newtop;
+   if (frameBufferInfo.top)
+      frameBufferInfo.top->higher = newtop;
 
-   if (!frameBuffer.bottom)
-      frameBuffer.bottom = newtop;
+   if (!frameBufferInfo.bottom)
+      frameBufferInfo.bottom = newtop;
 
-   frameBuffer.top = newtop;
+   frameBufferInfo.top = newtop;
 
-   frameBuffer.numBuffers++;
+   frameBufferInfo.numBuffers++;
 
    return newtop;
 }
 
 void FrameBuffer_MoveToTop( struct FrameBuffer *newtop )
 {
-   if (newtop == frameBuffer.top)
+   if (newtop == frameBufferInfo.top)
       return;
 
-   if (newtop == frameBuffer.bottom)
+   if (newtop == frameBufferInfo.bottom)
    {
-      frameBuffer.bottom = newtop->higher;
-      frameBuffer.bottom->lower = NULL;
+      frameBufferInfo.bottom = newtop->higher;
+      frameBufferInfo.bottom->lower = NULL;
    }
    else
    {
@@ -131,22 +131,22 @@ void FrameBuffer_MoveToTop( struct FrameBuffer *newtop )
    }
 
    newtop->higher = NULL;
-   newtop->lower = frameBuffer.top;
-   frameBuffer.top->higher = newtop;
-   frameBuffer.top = newtop;
+   newtop->lower = frameBufferInfo.top;
+   frameBufferInfo.top->higher = newtop;
+   frameBufferInfo.top = newtop;
 
    TextureCache_MoveToTop( newtop->texture );
 }
 
 void FrameBuffer_Destroy(void)
 {
-   while (frameBuffer.bottom)
+   while (frameBufferInfo.bottom)
       FrameBuffer_RemoveBottom();
 }
 
 void FrameBuffer_SaveBuffer( uint32_t address, uint16_t format, uint16_t size, uint16_t width, uint16_t height, bool unknown)
 {
-   struct FrameBuffer *current = frameBuffer.top;
+   struct FrameBuffer *current = frameBufferInfo.top;
 
    if (width != VI.width && height == 0)
       return;
@@ -220,12 +220,12 @@ void FrameBuffer_SaveBuffer( uint32_t address, uint16_t format, uint16_t size, u
 
 struct FrameBuffer *FrameBuffer_GetCurrent(void)
 {
-   return (struct FrameBuffer*)frameBuffer.top;
+   return (struct FrameBuffer*)frameBufferInfo.top;
 }
 
 void FrameBuffer_RenderBuffer( uint32_t address )
 {
-   struct FrameBuffer *current = (struct FrameBuffer*)frameBuffer.top;
+   struct FrameBuffer *current = (struct FrameBuffer*)frameBufferInfo.top;
 
    while (current != NULL)
    {
@@ -248,7 +248,7 @@ void FrameBuffer_RenderBuffer( uint32_t address )
 
 void FrameBuffer_RestoreBuffer( uint32_t address, uint16_t size, uint16_t width )
 {
-   struct FrameBuffer *current = (struct FrameBuffer*)frameBuffer.top;
+   struct FrameBuffer *current = (struct FrameBuffer*)frameBufferInfo.top;
 
    while (current != NULL)
    {
@@ -271,7 +271,7 @@ void FrameBuffer_RestoreBuffer( uint32_t address, uint16_t size, uint16_t width 
 
 struct FrameBuffer *FrameBuffer_FindBuffer( uint32_t address )
 {
-   struct FrameBuffer *current = (struct FrameBuffer*)frameBuffer.top;
+   struct FrameBuffer *current = (struct FrameBuffer*)frameBufferInfo.top;
 
    while (current)
    {

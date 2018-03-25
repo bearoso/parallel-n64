@@ -117,7 +117,7 @@ struct other_modes
     } f;
 };
 
-typedef struct rdp_globals
+struct rdp_globals
 {
    uint8_t cvgbuf[1024];
    uint8_t tmem[0x1000];

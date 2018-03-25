@@ -739,6 +739,7 @@ bool config_get_path(config_file_t *conf, const char *key,
    return entry != NULL;
 #endif
 #endif
+   return false;
 }
 
 bool config_get_bool(config_file_t *conf, const char *key, bool *in)

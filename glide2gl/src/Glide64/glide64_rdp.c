@@ -321,7 +321,7 @@ int CI_SET = true;
 uint32_t swapped_addr = 0;
 int depth_buffer_fog;
 
-extern bool frame_dupe;
+extern unsigned frame_dupe;
 
 void glide64ProcessDList(void)
 {
