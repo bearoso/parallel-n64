@@ -689,8 +689,6 @@ static int32_t vi_width_low;
 static uint32_t frame_buffer;
 static uint32_t tvfadeoutstate[PRESCALE_HEIGHT];
 
-static enum vi_mode vi_mode;
-
 // prescale buffer
 static int32_t prescale[PRESCALE_WIDTH * PRESCALE_HEIGHT];
 static uint32_t prescale_ptr;
@@ -753,7 +751,6 @@ void vi_init(struct core_config* _config)
     vi_restore_init();
 
     memset(prescale, 0, sizeof(prescale));
-    vi_mode              = VI_MODE_NORMAL;
 
     prevvicurrent        = 0;
     emucontrolsvicurrent = -1;
@@ -1357,14 +1354,6 @@ static void vi_process_end_fast(void)
 
 void vi_update(void)
 {
-    // clear buffer after switching VI modes to make sure that black borders are
-    // actually black and don't contain garbage
-    if (config->vi.mode != vi_mode)
-    {
-        memset(prescale, 0, sizeof(prescale));
-        vi_mode = config->vi.mode;
-    }
-
     // check for configuration errors
     if (config->vi.mode >= VI_MODE_NUM)
         msg_error("Invalid VI mode: %d", config->vi.mode);
