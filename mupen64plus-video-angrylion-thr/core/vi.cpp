@@ -1220,12 +1220,6 @@ static bool vi_process_start_fast(void)
     if (hres_raw <= 0 || vres_raw <= 0)
         return false;
 
-    // drop every other interlaced frame to avoid "wobbly" output due to the
-    // vertical offset
-    // TODO: completely skip rendering these frames in unfiltered to improve
-    // performance?
-    if (v_current_line)
-        return false;
 
     // skip blank/invalid modes
     if (!(ctrl.type & 2))
@@ -1239,6 +1233,13 @@ static void vi_process_fast(void)
    int32_t y_begin = 0;
    int32_t y_end = vres_raw;
    int32_t y_inc = 1;
+
+    // drop every other interlaced frame to avoid "wobbly" output due to the
+    // vertical offset
+    // TODO: completely skip rendering these frames in unfiltered to improve
+    // performance?
+    if (v_current_line)
+        return false;
 
    if (config->parallel)
    {
