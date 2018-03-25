@@ -961,18 +961,18 @@ static void blender_init(void)
 
 static void rdp_set_fog_color(const uint32_t* args)
 {
-    parallel_worker->globals.fog_color.r = (args[1] >> 24) & 0xff;
-    parallel_worker->globals.fog_color.g = (args[1] >> 16) & 0xff;
-    parallel_worker->globals.fog_color.b = (args[1] >>  8) & 0xff;
-    parallel_worker->globals.fog_color.a = (args[1] >>  0) & 0xff;
+    parallel_worker->globals.fog_color.r = RGBA32_R(args[1]);
+    parallel_worker->globals.fog_color.g = RGBA32_G(args[1]);
+    parallel_worker->globals.fog_color.b = RGBA32_B(args[1]);
+    parallel_worker->globals.fog_color.a = RGBA32_A(args[1]);
 }
 
 static void rdp_set_blend_color(const uint32_t* args)
 {
-    parallel_worker->globals.blend_color.r = (args[1] >> 24) & 0xff;
-    parallel_worker->globals.blend_color.g = (args[1] >> 16) & 0xff;
-    parallel_worker->globals.blend_color.b = (args[1] >>  8) & 0xff;
-    parallel_worker->globals.blend_color.a = (args[1] >>  0) & 0xff;
+    parallel_worker->globals.blend_color.r = RGBA32_R(args[1]);
+    parallel_worker->globals.blend_color.g = RGBA32_G(args[1]);
+    parallel_worker->globals.blend_color.b = RGBA32_B(args[1]);
+    parallel_worker->globals.blend_color.a = RGBA32_A(args[1]);
 }
 
 static INLINE void set_suba_rgb_input(int32_t **input_r, int32_t **input_g, int32_t **input_b, int code)
@@ -1657,18 +1657,18 @@ static void rdp_set_prim_color(const uint32_t* args)
 {
     parallel_worker->globals.min_level          = (args[0] >> 8) & 0x1f;
     parallel_worker->globals.primitive_lod_frac = args[0] & 0xff;
-    parallel_worker->globals.prim_color.r = (args[1] >> 24) & 0xff;
-    parallel_worker->globals.prim_color.g = (args[1] >> 16) & 0xff;
-    parallel_worker->globals.prim_color.b = (args[1] >>  8) & 0xff;
-    parallel_worker->globals.prim_color.a = (args[1] >>  0) & 0xff;
+    parallel_worker->globals.prim_color.r = RGBA32_R(args[1]);
+    parallel_worker->globals.prim_color.g = RGBA32_G(args[1]);
+    parallel_worker->globals.prim_color.b = RGBA32_B(args[1]);
+    parallel_worker->globals.prim_color.a = RGBA32_A(args[1]);
 }
 
 static void rdp_set_env_color(const uint32_t* args)
 {
-    parallel_worker->globals.env_color.r = (args[1] >> 24) & 0xff;
-    parallel_worker->globals.env_color.g = (args[1] >> 16) & 0xff;
-    parallel_worker->globals.env_color.b = (args[1] >>  8) & 0xff;
-    parallel_worker->globals.env_color.a = (args[1] >>  0) & 0xff;
+    parallel_worker->globals.env_color.r = RGBA32_R(args[1]);
+    parallel_worker->globals.env_color.g = RGBA32_G(args[1]);
+    parallel_worker->globals.env_color.b = RGBA32_B(args[1]);
+    parallel_worker->globals.env_color.a = RGBA32_A(args[1]);
 }
 
 static void rdp_set_combine(const uint32_t* args)
@@ -2556,9 +2556,9 @@ static void fbread_32(uint32_t curpixel, uint32_t* curpixel_memcvg)
 {
     uint32_t mem, addr = (parallel_worker->globals.fb_address >> 2) + curpixel;
     RREADIDX32(mem, addr);
-    parallel_worker->globals.memory_color.r = (mem >> 24) & 0xff;
-    parallel_worker->globals.memory_color.g = (mem >> 16) & 0xff;
-    parallel_worker->globals.memory_color.b = (mem >> 8) & 0xff;
+    parallel_worker->globals.memory_color.r = RGBA32_R(mem);
+    parallel_worker->globals.memory_color.g = RGBA32_G(mem);
+    parallel_worker->globals.memory_color.b = RGBA32_B(mem);
     if (parallel_worker->globals.other_modes.image_read_en)
     {
         *curpixel_memcvg = (mem >> 5) & 7;
@@ -2575,9 +2575,9 @@ static INLINE void fbread2_32(uint32_t curpixel, uint32_t* curpixel_memcvg)
 {
     uint32_t mem, addr = (parallel_worker->globals.fb_address >> 2) + curpixel;
     RREADIDX32(mem, addr);
-    parallel_worker->globals.pre_memory_color.r = (mem >> 24) & 0xff;
-    parallel_worker->globals.pre_memory_color.g = (mem >> 16) & 0xff;
-    parallel_worker->globals.pre_memory_color.b = (mem >> 8) & 0xff;
+    parallel_worker->globals.pre_memory_color.r = RGBA32_R(mem);
+    parallel_worker->globals.pre_memory_color.g = RGBA32_G(mem);
+    parallel_worker->globals.pre_memory_color.b = RGBA32_B(mem);
     if (parallel_worker->globals.other_modes.image_read_en)
     {
         *curpixel_memcvg = (mem >> 5) & 7;
