@@ -92,9 +92,9 @@ extern "C" {
             PAIRREAD16(&pix, &hidval, (x));                                   \
             if (hidval == 3 && (pix & 1))                               \
             {                                                           \
-                backr[numoffull] = GET_HI(pix);                         \
-                backg[numoffull] = GET_MED(pix);                        \
-                backb[numoffull] = GET_LOW(pix);                        \
+                backr[numoffull] = RGBA16_R(pix);                         \
+                backg[numoffull] = RGBA16_G(pix);                        \
+                backb[numoffull] = RGBA16_B(pix);                        \
                 numoffull++;                                            \
             }                                                           \
 }
@@ -619,9 +619,9 @@ static void vi_fetch_filter16(struct ccvg* res, uint32_t fboffset, uint32_t cur_
         RREADIDX16(pix, idx);
         cur_cvg = 7;
     }
-    r = GET_HI(pix);
-    g = GET_MED(pix);
-    b = GET_LOW(pix);
+    r = RGBA16_R(pix);
+    g = RGBA16_G(pix);
+    b = RGBA16_B(pix);
 
     if (cur_cvg == 7)
     {
@@ -1293,9 +1293,9 @@ static void vi_process_fast(void)
                         uint16_t pix;
                         uint32_t in = (frame_buffer >> 1) + line + x;
                         RREADIDX16(pix, in);
-                        r = ((pix >> 11) & 0x1f) << 3;
-                        g = ((pix >>  6) & 0x1f) << 3;
-                        b = ((pix >>  1) & 0x1f) << 3;
+                        r = RGBA16_R(pix);
+                        g = RGBA16_G(pix);
+                        b = RGBA16_B(pix);
                      }
                      break;
                   case VI_TYPE_RGBA8888:

@@ -2473,9 +2473,9 @@ static void fbread_16(uint32_t curpixel, uint32_t* curpixel_memcvg)
 
         if (parallel_worker->globals.fb_format == FORMAT_RGBA)
         {
-            parallel_worker->globals.memory_color.r = GET_HI(fword);
-            parallel_worker->globals.memory_color.g = GET_MED(fword);
-            parallel_worker->globals.memory_color.b = GET_LOW(fword);
+            parallel_worker->globals.memory_color.r = RGBA16_R(fword);
+            parallel_worker->globals.memory_color.g = RGBA16_G(fword);
+            parallel_worker->globals.memory_color.b = RGBA16_B(fword);
             lowbits = ((fword & 1) << 2) | hbyte;
         }
         else
@@ -2493,9 +2493,9 @@ static void fbread_16(uint32_t curpixel, uint32_t* curpixel_memcvg)
 
         if (parallel_worker->globals.fb_format == FORMAT_RGBA)
         {
-            parallel_worker->globals.memory_color.r = GET_HI(fword);
-            parallel_worker->globals.memory_color.g = GET_MED(fword);
-            parallel_worker->globals.memory_color.b = GET_LOW(fword);
+            parallel_worker->globals.memory_color.r = RGBA16_R(fword);
+            parallel_worker->globals.memory_color.g = RGBA16_G(fword);
+            parallel_worker->globals.memory_color.b = RGBA16_B(fword);
         }
         else
             parallel_worker->globals.memory_color.r = parallel_worker->globals.memory_color.g = parallel_worker->globals.memory_color.b = fword >> 8;
@@ -2519,9 +2519,9 @@ static void fbread2_16(uint32_t curpixel, uint32_t* curpixel_memcvg)
 
         if (parallel_worker->globals.fb_format == FORMAT_RGBA)
         {
-            parallel_worker->globals.pre_memory_color.r = GET_HI(fword);
-            parallel_worker->globals.pre_memory_color.g = GET_MED(fword);
-            parallel_worker->globals.pre_memory_color.b = GET_LOW(fword);
+            parallel_worker->globals.pre_memory_color.r = RGBA16_R(fword);
+            parallel_worker->globals.pre_memory_color.g = RGBA16_G(fword);
+            parallel_worker->globals.pre_memory_color.b = RGBA16_B(fword);
             lowbits = ((fword & 1) << 2) | hbyte;
         }
         else
@@ -2539,9 +2539,9 @@ static void fbread2_16(uint32_t curpixel, uint32_t* curpixel_memcvg)
 
         if (parallel_worker->globals.fb_format == FORMAT_RGBA)
         {
-            parallel_worker->globals.pre_memory_color.r = GET_HI(fword);
-            parallel_worker->globals.pre_memory_color.g = GET_MED(fword);
-            parallel_worker->globals.pre_memory_color.b = GET_LOW(fword);
+            parallel_worker->globals.pre_memory_color.r = RGBA16_R(fword);
+            parallel_worker->globals.pre_memory_color.g = RGBA16_G(fword);
+            parallel_worker->globals.pre_memory_color.b = RGBA16_B(fword);
         }
         else
             parallel_worker->globals.pre_memory_color.r = parallel_worker->globals.pre_memory_color.g = parallel_worker->globals.pre_memory_color.b = fword >> 8;
