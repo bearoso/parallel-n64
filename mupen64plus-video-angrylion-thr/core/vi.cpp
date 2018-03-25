@@ -1213,13 +1213,12 @@ static bool vi_process_start_fast(void)
 {
     // note: this is probably a very, very crude method to get the frame size,
     // but should hopefully work most of the time
-    hres_raw = x_add * hres / 1024;
-    vres_raw = y_add * vres / 1024;
+    hres_raw = (int32_t)x_add * hres / 1024;
+    vres_raw = (int32_t)y_add * vres / 1024;
 
     // skip invalid frame sizes
     if (hres_raw <= 0 || vres_raw <= 0)
         return false;
-
 
     // skip blank/invalid modes
     if (!(ctrl.type & 2))
@@ -1238,7 +1237,7 @@ static void vi_process_fast(void)
     // vertical offset
     // TODO: completely skip rendering these frames in unfiltered to improve
     // performance?
-    if (v_current_line)
+    if (ctrl.serrate && v_current_line)
         return false;
 
    if (config->parallel)
