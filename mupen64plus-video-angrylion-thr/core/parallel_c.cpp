@@ -63,6 +63,7 @@ Parallel::Parallel(uint32_t num_workers)
 
    // wait for workers to finish task to make sure they're ready
    parallel_worker = &m_workers[0];
+   wait();
 }
 
 Parallel::~Parallel()
@@ -123,8 +124,16 @@ void Parallel::do_work()
 void Parallel::wait()
 {
    std::unique_lock<std::mutex> ul(m_mutex);
+   wait(ul);
+}
+
+void wait(std::unique_lock<std::mutex>& ul)
+{
    while (m_workers_active)
+   {
+      std::this_thread::yield();
       m_signal_done.wait(ul);
+   }
 }
 
 void parallel_alinit(uint32_t num)
